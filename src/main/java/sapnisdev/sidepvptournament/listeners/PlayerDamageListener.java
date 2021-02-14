@@ -45,7 +45,9 @@ class PlayerDamageListener implements Listener {
                                 }
                                 evt.setCancelled(true);
                                 player.teleport(mainManager.getWorldSpawn());
+                                System.out.println(player.getName());
                                 match.setWinner(player.getName().equalsIgnoreCase(match.getInitiator().getName()) ? match.getOpponent() : match.getInitiator());
+                                match.setLoser(player.getName().equalsIgnoreCase(match.getInitiator().getName()) ? match.getInitiator() : match.getOpponent());
                                 mainManager.removeFromTournament(player);
                                 mainManager.addMatchWinner(match.getWinner());
                                 mainManager.endMatch(match);

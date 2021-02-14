@@ -99,7 +99,7 @@ configuration:
 
 messages:
     no-permission: "&cYou do not have permission to execute this command."
-    improper-usage: "&cImproper usage. Proper usage for this command: /tournament join | leave | start | end | setspawn <arena> <1|2> | setspawn <-spectator|-world>."
+    improper-usage: "&cImproper usage. Proper usage for this command: /tournament join | forcestart | leave | start | end | setspawn <arena> <1|2> | setspawn <-spectator|-world>."
     invalid-sender: "&cInvalid sender. You must be a player to perform this command."
     invalid-number: "&cInvalid number. You must enter a positive integer."
     plugin-disabled-in-world: "&cThis plugin is disabled in the world you are currently in."
@@ -110,7 +110,7 @@ messages:
     already-in-tournament: "&cYou are already in the tournament."
     not-in-tournament: "&cYou are currently not in a tournament."
     match-start-broadcast: "&c{initiator} &7and &c{opponent} &7are now fighting."
-    match-winner-broadcast: "{winner} has won the match!"
+    match-winner-broadcast: "{winner} has won the match against {loser}!"
     match-idle-broadcast: "&a{initiator}&7 and &a{opponent} &7have both been eliminated for idling."
     match-current-force-end-success: "&aYou have forcefully ended the current match."
     match-specific-force-end-success: "&aYou have forcefully ended the match between &e{initiator} &aand &e{opponent}&a."

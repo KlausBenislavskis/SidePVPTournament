@@ -44,7 +44,7 @@ class PlayerQuitListener implements Listener {
                         .findAny()
                         .ifPresent(match -> {
                             match.setWinner(player.getName().equalsIgnoreCase(match.getInitiator().getName()) ? match.getOpponent() : match.getInitiator());
-
+                            match.setLoser(player.getName().equalsIgnoreCase(match.getInitiator().getName()) ? match.getInitiator() : match.getOpponent());
                             mainManager.addMatchWinner(match.getWinner());
                             mainManager.endMatch(match);
                         });

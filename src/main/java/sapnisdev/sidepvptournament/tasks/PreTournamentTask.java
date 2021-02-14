@@ -50,4 +50,7 @@ public class PreTournamentTask extends BukkitRunnable {
 
         countdown--;
     }
+    public  void setCountdown(){
+        countdown = 10;
+    }
 }

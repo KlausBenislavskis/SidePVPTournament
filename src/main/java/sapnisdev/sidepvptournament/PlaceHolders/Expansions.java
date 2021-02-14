@@ -43,8 +43,6 @@ public class Expansions extends PlaceholderExpansion {
     public String onRequest(OfflinePlayer player, String identifier) {
 
         if (identifier.equals("players_joined")) {
-            System.out.println("participant size " + TournamentPlugin.getMainManager().getParticipants().size() );
-            System.out.println("MatchWiner size " + TournamentPlugin.getMainManager().getMatchWinners().size());
             int joinedPlayers = 0;
             joinedPlayers = TournamentPlugin.getMainManager().getParticipants().size() + TournamentPlugin.getMainManager().getMatchWinners().size();
             int activeMatchPlayers = 0;

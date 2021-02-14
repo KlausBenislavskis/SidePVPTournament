@@ -24,6 +24,8 @@ public class Match {
     private Player winner;
 
     @Getter @Setter
+    private Player loser;
+    @Getter @Setter
     private boolean isRunning;
 
     @Getter @Setter
@@ -41,9 +43,9 @@ public class Match {
         setArena(null);
         setRunning(false);
         setWinner(null);
+        setLoser(null);
         matchTask.cancel();
     }
-
     public Set<Player> toSet() {
         return Sets.newHashSet(initiator, opponent);
     }

@@ -91,7 +91,7 @@ public class MatchManager {
 
     public void endMatch(Match match) {
         plugin.getServer().getPluginManager().callEvent(new MatchEndEvent(match));
-        Bukkit.broadcastMessage(Lang.MATCH_WINNER_BROADCAST.toString().replace("{winner}", match.getWinner().getName()));
+        Bukkit.broadcastMessage(Lang.MATCH_WINNER_BROADCAST.toString().replace("{winner}", match.getWinner().getName()).replace("{loser}",match.getLoser().getName()));
 
         //removeTag(match.getInitiator(), match.getOpponent());
         match.getWinner().teleport(mainManager.getSpectatorArea());
