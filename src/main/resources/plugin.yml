@@ -2,8 +2,8 @@ name: SidePVPTournament
 main: sapnisdev.sidepvptournament.TournamentPlugin
 authors: [ Sapnis ]
 description: 1vs1 pvp Tournament
-version: 0.1
+version: 0.2
 commands:
-  tournament:
-    aliases: [t, tourney, st, smarttournament, smartt, stournament, stourney]
+  t:
+    aliases: [tournament]
     description: The base command for all tournament commands.

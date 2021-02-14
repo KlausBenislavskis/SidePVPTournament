@@ -3,8 +3,8 @@
 # author: Sapnis                                                                                            #
 # version: 1.3.7 | build # 41
 # PlaceHolders:
-#   - SidePVPTournament_players_joined
-#   - SidePVPTournament_max_players
+#   - t_players_joined
+#   - t_max_players
 #========================================================================================================#
 
 configuration:

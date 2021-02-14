@@ -53,7 +53,7 @@ public class TournamentPlugin extends JavaPlugin {
     }
 
     private void loadCommands() {
-        getCommand("tournament").setExecutor(new sapnisdev.sidepvptournament.CommandTournament(this));
+        getCommand("t").setExecutor(new sapnisdev.sidepvptournament.CommandTournament(this));
     }
 
     private void loadListeners() {
