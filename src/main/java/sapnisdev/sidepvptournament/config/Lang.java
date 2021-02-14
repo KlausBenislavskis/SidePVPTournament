@@ -1,5 +1,8 @@
 package sapnisdev.sidepvptournament.config;
 
+import me.clip.placeholderapi.PlaceholderAPI;
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import sapnisdev.sidepvptournament.ChatUtil;
 import sapnisdev.sidepvptournament.TournamentPlugin;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -56,6 +59,6 @@ public enum Lang {
     }
 
     public String toString() {
-        return ChatUtil.color((config.getBoolean("configuration.prefix-enabled") ? config.getString("configuration.prefix") : "" ) + config.getString(path));
+        return PlaceholderAPI.setPlaceholders((OfflinePlayer) Bukkit.getOnlinePlayers().toArray()[0],ChatUtil.color((config.getBoolean("configuration.prefix-enabled") ? config.getString("configuration.prefix") : "" ) + config.getString(path)));
     }
 }

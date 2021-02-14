@@ -1,5 +1,6 @@
 package sapnisdev.sidepvptournament;
 
+import me.clip.placeholderapi.PlaceholderAPI;
 import sapnisdev.sidepvptournament.config.Lang;
 import sapnisdev.sidepvptournament.managers.MainManager;
 import sapnisdev.sidepvptournament.objects.Match;

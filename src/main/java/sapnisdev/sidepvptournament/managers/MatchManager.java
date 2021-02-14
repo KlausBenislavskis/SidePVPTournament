@@ -63,7 +63,7 @@ public class MatchManager {
     }
 
     public void teleportPlayers(Match match) {
-
+//Pameginat settot location nevsis tp
         match.getInitiator().teleport(match.getArena().getFirstLocation());
         match.getOpponent().teleport(match.getArena().getSecondLocation());
     }
@@ -115,7 +115,7 @@ public class MatchManager {
         match.reset();
         mainManager.removeFromTournament(match.getInitiator(), match.getOpponent());
 
-        if(mainManager.getMatchWinners().size() == 0 && mainManager.getParticipants().size() < 1 && mainManager.getMatches().size() < 1) {
+        if (mainManager.getMatchWinners().size() == 0 && mainManager.getParticipants().size() < 1 && mainManager.getMatches().size() < 1) {
             Bukkit.broadcastMessage(Lang.TOURNAMENT_NO_WINNER_BROADCAST.toString());
             mainManager.getTournament().end();
         }
@@ -135,7 +135,7 @@ public class MatchManager {
         match.reset();
         mainManager.removeFromTournament(match.getInitiator(), match.getOpponent());
 
-        if(mainManager.getMatchWinners().size() == 0 && mainManager.getParticipants().size() < 1 && mainManager.getMatches().size() < 1) {
+        if (mainManager.getMatchWinners().size() == 0 && mainManager.getParticipants().size() < 1 && mainManager.getMatches().size() < 1) {
             Bukkit.broadcastMessage(Lang.TOURNAMENT_NO_WINNER_BROADCAST.toString());
             mainManager.getTournament().end();
         }
@@ -148,13 +148,13 @@ public class MatchManager {
     }
 
     private void unmapStates(HashMap<String, SavedPlayerState> states, Match match) {
-        if(states.containsKey(match.getInitiator().getName())) {
+        if (states.containsKey(match.getInitiator().getName())) {
             SavedPlayerState init = states.get(match.getInitiator().getName());
             init.revert();
             states.remove(match.getInitiator().getName());
         }
 
-        if(states.containsKey(match.getOpponent().getName())) {
+        if (states.containsKey(match.getOpponent().getName())) {
             SavedPlayerState op = states.get(match.getOpponent().getName());
             op.revert();
             states.remove(match.getOpponent().getName());

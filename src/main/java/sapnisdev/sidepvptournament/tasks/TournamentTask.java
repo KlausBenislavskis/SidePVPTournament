@@ -26,7 +26,7 @@ public class TournamentTask extends BukkitRunnable {
         this.tournament = tournament;
         this.matchWinners = mainManager.getMatchWinners();
         this.participants = mainManager.getParticipants();
-
+        Collections.shuffle(participants);
         mainManager.getTournamentManager().getOriginalParticipants().addAll(participants);
         tournament.setStage(TournamentStage.ACTIVE);
     }
@@ -52,7 +52,7 @@ public class TournamentTask extends BukkitRunnable {
         }
 
         else if(matchWinners.size() > 1 && participants.size() < 1) {
-            Collections.shuffle(matchWinners);
+
             participants.addAll(matchWinners);
             matchWinners.clear();
         }

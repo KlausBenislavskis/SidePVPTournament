@@ -1,6 +1,8 @@
 package sapnisdev.sidepvptournament;
 
 import lombok.Getter;
+import org.bukkit.Bukkit;
+import sapnisdev.sidepvptournament.PlaceHolders.Expansions;
 import sapnisdev.sidepvptournament.api.TournamentAPI;
 import sapnisdev.sidepvptournament.config.PluginConfig;
 import sapnisdev.sidepvptournament.listeners.ListenerHandler;
@@ -35,11 +37,17 @@ public class TournamentPlugin extends JavaPlugin {
 
         loadCommands();
         loadListeners();
+        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            new Expansions().register();
+        } else {
+            getLogger().info("Could not find PlaceholderAPI! This plugin is required for placeholders.");
+            Bukkit.getPluginManager().disablePlugin(this);
+        }
     }
 
     @Override
     public void onDisable() {
-        if(mainManager != null) {
+        if (mainManager != null) {
             mainManager.endTournament();
         }
     }
