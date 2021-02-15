@@ -2,8 +2,10 @@ package sapnisdev.sidepvptournament.config;
 
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.util.io.BukkitObjectOutputStream;
 
 import java.io.*;
+import java.util.zip.GZIPOutputStream;
 
 public class PluginConfig {
 

@@ -20,6 +20,7 @@ public class NewPlayerState {
     }
 
     public void modifyPlayer(Player player) {
+        player.getInventory().clear();
         setDefaultState(player);
         addEffects(player);
         addArmor(player);

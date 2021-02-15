@@ -1,5 +1,6 @@
 package sapnisdev.sidepvptournament.tasks;
 
+import lombok.SneakyThrows;
 import sapnisdev.sidepvptournament.TournamentPlugin;
 import sapnisdev.sidepvptournament.TournamentStage;
 import sapnisdev.sidepvptournament.config.Lang;
@@ -12,9 +13,11 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
+import java.util.*;
+import java.util.zip.GZIPOutputStream;
 
 public class TournamentTask extends BukkitRunnable {
     private final MainManager mainManager;
@@ -31,6 +34,7 @@ public class TournamentTask extends BukkitRunnable {
         tournament.setStage(TournamentStage.ACTIVE);
     }
 
+    @SneakyThrows
     public void run() {
         if(mainManager.getAvailableArena() == null) {
             return;
