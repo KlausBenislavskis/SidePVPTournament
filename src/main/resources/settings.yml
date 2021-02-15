@@ -5,8 +5,12 @@
 # PlaceHolders:
 #   - t_players_joined
 #   - t_max_players
-#
-#
+#   - t_till_start
+#   - t_arena1_player1
+#   - arena1_player2
+#   - arena2_player1
+#   - arena2_player1
+#   - arena2_player2
 #========================================================================================================#
 
 configuration:
