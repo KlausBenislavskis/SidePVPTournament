@@ -1,6 +1,7 @@
 package sapnisdev.sidepvptournament.tasks;
 
 import lombok.SneakyThrows;
+import org.bukkit.event.block.BlockBreakEvent;
 import sapnisdev.sidepvptournament.TournamentPlugin;
 import sapnisdev.sidepvptournament.TournamentStage;
 import sapnisdev.sidepvptournament.config.Lang;
@@ -73,6 +74,7 @@ public class TournamentTask extends BukkitRunnable {
 
             config.getStringList("configuration.winner-rewards.reward-commands")
                     .forEach(s -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), s.replace("{username}", winner.getName())));
+            Bukkit.getServer().getPluginManager().callEvent(new BlockBreakEvent(Bukkit.getWorld("world").getBlockAt(0,1,0), winner));
             tournament.end();
         }
     }
