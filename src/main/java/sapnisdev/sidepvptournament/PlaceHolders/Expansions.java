@@ -52,10 +52,10 @@ public class Expansions extends PlaceholderExpansion {
                     activeMatchPlayers += 2;
                 }
             }
-            if (activeMatchPlayers != 0 ){
-                activeMatchPlayers= activeMatchPlayers -2;
+            if (activeMatchPlayers != 0) {
+                activeMatchPlayers = activeMatchPlayers - 2;
             }
-            return String.valueOf(joinedPlayers +activeMatchPlayers);
+            return String.valueOf(joinedPlayers + activeMatchPlayers);
         }
         if (identifier.equals("max_players")) {
             final YamlConfiguration config = TournamentPlugin.getInstance().getConfig();
@@ -63,29 +63,37 @@ public class Expansions extends PlaceholderExpansion {
 
         }
         if (identifier.equals("arena1_player1")) {
-            if (TournamentPlugin.getMainManager().getMatches().get(0).isRunning()){
-                return TournamentPlugin.getMainManager().getMatches().get(0).getInitiator().getName();
+            if (TournamentPlugin.getMainManager().getMatches().size() > 0) {
+                if (TournamentPlugin.getMainManager().getMatches().get(0).isRunning()) {
+                    return TournamentPlugin.getMainManager().getMatches().get(0).getInitiator().getName();
+                }
             }
             return "none";
 
         }
         if (identifier.equals("arena1_player2")) {
-            if (TournamentPlugin.getMainManager().getMatches().get(0).isRunning()){
-                return TournamentPlugin.getMainManager().getMatches().get(0).getOpponent().getName();
+            if (TournamentPlugin.getMainManager().getMatches().size() > 0) {
+                if (TournamentPlugin.getMainManager().getMatches().get(0).isRunning()) {
+                    return TournamentPlugin.getMainManager().getMatches().get(0).getOpponent().getName();
+                }
             }
             return "none";
 
         }
         if (identifier.equals("arena2_player1")) {
-            if (TournamentPlugin.getMainManager().getMatches().get(2).isRunning()){
-                return TournamentPlugin.getMainManager().getMatches().get(2).getInitiator().getName();
+            if (TournamentPlugin.getMainManager().getMatches().size() > 0) {
+                if (TournamentPlugin.getMainManager().getMatches().get(2).isRunning()) {
+                    return TournamentPlugin.getMainManager().getMatches().get(2).getInitiator().getName();
+                }
             }
             return "none";
 
         }
         if (identifier.equals("arena2_player2")) {
-            if (TournamentPlugin.getMainManager().getMatches().get(2).isRunning()){
-                return TournamentPlugin.getMainManager().getMatches().get(2).getOpponent().getName();
+            if (TournamentPlugin.getMainManager().getMatches().size() > 0) {
+                if (TournamentPlugin.getMainManager().getMatches().get(2).isRunning()) {
+                    return TournamentPlugin.getMainManager().getMatches().get(2).getOpponent().getName();
+                }
             }
             return "none";
 
