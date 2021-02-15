@@ -81,7 +81,7 @@ public class Expansions extends PlaceholderExpansion {
 
         }
         if (identifier.equals("arena2_player1")) {
-            if (TournamentPlugin.getMainManager().getMatches().size() > 0) {
+            if (TournamentPlugin.getMainManager().getMatches().size() > 1) {
                 if (TournamentPlugin.getMainManager().getMatches().get(2).isRunning()) {
                     return TournamentPlugin.getMainManager().getMatches().get(2).getInitiator().getName();
                 }
@@ -90,7 +90,7 @@ public class Expansions extends PlaceholderExpansion {
 
         }
         if (identifier.equals("arena2_player2")) {
-            if (TournamentPlugin.getMainManager().getMatches().size() > 0) {
+            if (TournamentPlugin.getMainManager().getMatches().size() > 1) {
                 if (TournamentPlugin.getMainManager().getMatches().get(2).isRunning()) {
                     return TournamentPlugin.getMainManager().getMatches().get(2).getOpponent().getName();
                 }
