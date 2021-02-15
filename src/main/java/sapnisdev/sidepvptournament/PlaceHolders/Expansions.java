@@ -98,6 +98,13 @@ public class Expansions extends PlaceholderExpansion {
             return "none";
 
         }
+        if (identifier.equals("till_start")) {
+            if (TournamentPlugin.getMainManager().isTournamentRunning()) {
+                return TournamentPlugin.getMainManager().getTournament().getPreTournamentTask().getCountdown();
+            }
+            return "Inactive";
+
+        }
         return null;
     }
 

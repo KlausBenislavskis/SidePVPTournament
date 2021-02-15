@@ -53,4 +53,7 @@ public class PreTournamentTask extends BukkitRunnable {
     public  void setCountdown(){
         countdown = 10;
     }
+    public  String  getCountdown(){
+        return String.valueOf(countdown);
+    }
 }
