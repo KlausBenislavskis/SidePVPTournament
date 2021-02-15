@@ -32,6 +32,7 @@ configuration:
    - 1
    winner-rewards:
       message-enabled: true
+      leaderboard-points: true
       reward-commands:
    when-fighting:
       ensure-max-health: true

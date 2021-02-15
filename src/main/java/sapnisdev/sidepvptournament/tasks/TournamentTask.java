@@ -1,6 +1,8 @@
 package sapnisdev.sidepvptournament.tasks;
 
 import lombok.SneakyThrows;
+import org.bukkit.Material;
+import org.bukkit.Statistic;
 import org.bukkit.event.block.BlockBreakEvent;
 import sapnisdev.sidepvptournament.TournamentPlugin;
 import sapnisdev.sidepvptournament.TournamentStage;
@@ -37,44 +39,40 @@ public class TournamentTask extends BukkitRunnable {
 
     @SneakyThrows
     public void run() {
-        if(mainManager.getAvailableArena() == null) {
+        if (mainManager.getAvailableArena() == null) {
             return;
         }
 
         Arena arena = mainManager.getAvailableArena();
 
-        if(participants.size() > 1) {
+        if (participants.size() > 1) {
             Match match = new Match(Bukkit.getPlayer(participants.remove(0)), Bukkit.getPlayer(participants.remove(0)));
             match.setArena(arena);
 
             arena.setOccupied(true);
             mainManager.startMatch(match);
 
-        }
-
-        else if(participants.size() == 1) {
+        } else if (participants.size() == 1) {
             matchWinners.add(participants.remove(0));
-        }
-
-        else if(matchWinners.size() > 1 && participants.size() < 1) {
+        } else if (matchWinners.size() > 1 && participants.size() < 1) {
 
             participants.addAll(matchWinners);
             matchWinners.clear();
-        }
-
-        else if(matchWinners.size() == 1 && participants.size() < 1 && mainManager.getMatches().size() == 0) {
+        } else if (matchWinners.size() == 1 && participants.size() < 1 && mainManager.getMatches().size() == 0) {
             Bukkit.broadcastMessage(Lang.TOURNAMENT_WINNER_BROADCAST.toString().replace("{winner}", Bukkit.getPlayer(matchWinners.get(0)).getName()));
 
             final YamlConfiguration config = TournamentPlugin.getInstance().getConfig();
             final Player winner = Bukkit.getPlayer(matchWinners.get(0));
 
-            if(config.getBoolean("configuration.winner-rewards.message-enabled")) {
+            if (config.getBoolean("configuration.winner-rewards.message-enabled")) {
                 winner.sendMessage(Lang.TOURNAMENT_WINNER_REWARD_MESSAGE.toString());
             }
 
             config.getStringList("configuration.winner-rewards.reward-commands")
                     .forEach(s -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), s.replace("{username}", winner.getName())));
-            Bukkit.getServer().getPluginManager().callEvent(new BlockBreakEvent(Bukkit.getWorld("world").getBlockAt(0,1,0), winner));
+            if (config.getBoolean("configuration.winner-rewards.leaderboard-points")) {
+                winner.setStatistic(Statistic.CRAFT_ITEM, Material.HOPPER, winner.getStatistic(Statistic.CRAFT_ITEM, Material.HOPPER) + 1);
+            }
             tournament.end();
         }
     }
