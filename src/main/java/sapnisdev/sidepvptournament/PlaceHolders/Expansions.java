@@ -82,8 +82,8 @@ public class Expansions extends PlaceholderExpansion {
         }
         if (identifier.equals("arena2_player1")) {
             if (TournamentPlugin.getMainManager().getMatches().size() > 1) {
-                if (TournamentPlugin.getMainManager().getMatches().get(2).isRunning()) {
-                    return TournamentPlugin.getMainManager().getMatches().get(2).getInitiator().getName();
+                if (TournamentPlugin.getMainManager().getMatches().get(1).isRunning()) {
+                    return TournamentPlugin.getMainManager().getMatches().get(1).getInitiator().getName();
                 }
             }
             return "none";
@@ -91,8 +91,8 @@ public class Expansions extends PlaceholderExpansion {
         }
         if (identifier.equals("arena2_player2")) {
             if (TournamentPlugin.getMainManager().getMatches().size() > 1) {
-                if (TournamentPlugin.getMainManager().getMatches().get(2).isRunning()) {
-                    return TournamentPlugin.getMainManager().getMatches().get(2).getOpponent().getName();
+                if (TournamentPlugin.getMainManager().getMatches().get(1).isRunning()) {
+                    return TournamentPlugin.getMainManager().getMatches().get(1).getOpponent().getName();
                 }
             }
             return "none";
