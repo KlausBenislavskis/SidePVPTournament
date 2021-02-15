@@ -77,6 +77,7 @@ public class MatchManager {
         matches.add(match);
 
         mapStates(playerStates, match);
+
         match.toSet().forEach(newPlayerState::modifyPlayer);
 
         MatchTask task = new MatchTask(match);

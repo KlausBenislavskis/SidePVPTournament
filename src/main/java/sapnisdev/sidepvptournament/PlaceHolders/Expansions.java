@@ -43,6 +43,7 @@ public class Expansions extends PlaceholderExpansion {
     public String onRequest(OfflinePlayer player, String identifier) {
 
         if (identifier.equals("players_joined")) {
+
             int joinedPlayers = 0;
             joinedPlayers = TournamentPlugin.getMainManager().getParticipants().size() + TournamentPlugin.getMainManager().getMatchWinners().size();
             int activeMatchPlayers = 0;
@@ -59,6 +60,34 @@ public class Expansions extends PlaceholderExpansion {
         if (identifier.equals("max_players")) {
             final YamlConfiguration config = TournamentPlugin.getInstance().getConfig();
             return String.valueOf(config.getInt("configuration.maximum-players-allowed"));
+
+        }
+        if (identifier.equals("arena1_player1")) {
+            if (TournamentPlugin.getMainManager().getMatches().get(0).isRunning()){
+                return TournamentPlugin.getMainManager().getMatches().get(0).getInitiator().getName();
+            }
+            return "none";
+
+        }
+        if (identifier.equals("arena1_player2")) {
+            if (TournamentPlugin.getMainManager().getMatches().get(0).isRunning()){
+                return TournamentPlugin.getMainManager().getMatches().get(0).getOpponent().getName();
+            }
+            return "none";
+
+        }
+        if (identifier.equals("arena2_player1")) {
+            if (TournamentPlugin.getMainManager().getMatches().get(2).isRunning()){
+                return TournamentPlugin.getMainManager().getMatches().get(2).getInitiator().getName();
+            }
+            return "none";
+
+        }
+        if (identifier.equals("arena2_player2")) {
+            if (TournamentPlugin.getMainManager().getMatches().get(2).isRunning()){
+                return TournamentPlugin.getMainManager().getMatches().get(2).getOpponent().getName();
+            }
+            return "none";
 
         }
         return null;
