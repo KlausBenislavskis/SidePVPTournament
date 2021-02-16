@@ -60,6 +60,7 @@ public class Tournament {
 
         reset(true);
         setStage(TournamentStage.INACTIVE);
+        TournamentPlugin.getMainManager().getScoreBoard().removeScoreboards();
     }
 
     private void reset(boolean end) {

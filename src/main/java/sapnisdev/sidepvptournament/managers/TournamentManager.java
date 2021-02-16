@@ -60,6 +60,7 @@ public class TournamentManager {
         if(!isTournamentRunning()) {
             tournament = new Tournament();
             tournament.start(false);
+
         }
     }
 

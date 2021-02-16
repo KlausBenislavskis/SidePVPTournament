@@ -30,6 +30,7 @@ class PlayerJoinListener implements Listener {
             plugin.getRawConfig().saveConfig();
         }
         if (manager.isTournamentRunning()){
+            if(evt.getPlayer().getLocation().getWorld().getName().equals("event"))
             manager.getScoreBoard().setScoreBoard(evt.getPlayer());
         }
     }

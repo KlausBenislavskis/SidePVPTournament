@@ -3,6 +3,8 @@ package sapnisdev.sidepvptournament.FeatherBoard;
 import be.maximvdw.featherboard.api.FeatherBoardAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import sapnisdev.sidepvptournament.TournamentPlugin;
+import sapnisdev.sidepvptournament.TournamentStage;
 import sapnisdev.sidepvptournament.managers.MainManager;
 
 public class ScoreBoard {
@@ -14,17 +16,24 @@ public class ScoreBoard {
 
     public void setScoreboardAll() {
         for (Player player : Bukkit.getOnlinePlayers()) {
-            if (Integer.parseInt(manager.getTournament().getPreTournamentTask().getCountdown()) > 0) {
-                FeatherBoardAPI.showScoreboard(player, "preTournament");
-            } else FeatherBoardAPI.showScoreboard(player, "tournament");
+            if (TournamentPlugin.getMainManager().getTournament().getStage().equals(TournamentStage.WAITING)) {
+                FeatherBoardAPI.showScoreboard(player, "pretournament");
+            } else if (TournamentPlugin.getMainManager().getTournament().getStage().equals(TournamentStage.ACTIVE)) {
+                FeatherBoardAPI.showScoreboard(player, "tournament");
+            } else if (TournamentPlugin.getMainManager().getTournament().getStage().equals(TournamentStage.INACTIVE)) {
+                Bukkit.broadcastMessage("Inactive");
+            }
         }
     }
 
     public void setScoreBoard(Player player) {
-        if (Integer.parseInt(manager.getTournament().getPreTournamentTask().getCountdown()) > 0) {
-            FeatherBoardAPI.showScoreboard(player, "preTournament");
-        } else FeatherBoardAPI.showScoreboard(player, "tournament");
-
+        if (TournamentPlugin.getMainManager().getTournament().getStage().equals(TournamentStage.WAITING)) {
+            FeatherBoardAPI.showScoreboard(player, "pretournament");
+        } else if (TournamentPlugin.getMainManager().getTournament().getStage().equals(TournamentStage.ACTIVE)) {
+            FeatherBoardAPI.showScoreboard(player, "tournament");
+        } else if (TournamentPlugin.getMainManager().getTournament().getStage().equals(TournamentStage.INACTIVE)) {
+            Bukkit.broadcastMessage("Inactive");
+        }
     }
 
     public void removeScoreboards() {
@@ -32,5 +41,10 @@ public class ScoreBoard {
             FeatherBoardAPI.resetDefaultScoreboard(player);
         }
     }
+
+    public void removeScoreboard(Player player) {
+        FeatherBoardAPI.resetDefaultScoreboard(player);
+    }
 }
+
 

@@ -134,7 +134,6 @@ public class MainManager {
 
     public void startTournament() {
         scoreBoard = new ScoreBoard(this);
-        scoreBoard.setScoreboardAll();
         tournamentManager.startTournament();
     }
 

@@ -21,10 +21,10 @@ public class ListenerHandler {
 
     @Getter
     private BlockBreakListener blockBreakListener;
-
-
     @Getter
     private PlayerJoinListener playerJoinListener;
+    @Getter
+    private playerTeleportEvent playerTeleportEvent;
 
     public ListenerHandler(TournamentPlugin plugin, MainManager mainManager) {
         this.commandListener = new CommandListener(plugin);
@@ -32,6 +32,7 @@ public class ListenerHandler {
         this.playerDamageListener = new PlayerDamageListener(plugin);
         this.playerQuitListener = new PlayerQuitListener(plugin);
         this.blockBreakListener = new BlockBreakListener(plugin);
+        this.playerTeleportEvent = new playerTeleportEvent(plugin);
         this.playerJoinListener = new PlayerJoinListener(plugin,mainManager);
     }
 }
