@@ -186,7 +186,7 @@ class CommandTournament implements CommandExecutor {
 
                 Bukkit.broadcastMessage(Lang.TOURNAMENT_END_BROADCAST.toString());
                 sender.sendMessage(Lang.TOURNAMENT_END_SUCCESS.toString());
-
+                TournamentPlugin.getMainManager().getScoreBoard().removeScoreboards();
                 mainManager.endTournament();
                 break;
 

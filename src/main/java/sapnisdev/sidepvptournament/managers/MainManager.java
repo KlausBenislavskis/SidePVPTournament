@@ -3,6 +3,7 @@ package sapnisdev.sidepvptournament.managers;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.util.io.BukkitObjectInputStream;
+import sapnisdev.sidepvptournament.FeatherBoard.ScoreBoard;
 import sapnisdev.sidepvptournament.TournamentPlugin;
 import sapnisdev.sidepvptournament.objects.Arena;
 import sapnisdev.sidepvptournament.objects.Match;
@@ -11,6 +12,7 @@ import sapnisdev.sidepvptournament.objects.player.SavedPlayerState;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import be.maximvdw.featherboard.api.FeatherBoardAPI;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
@@ -24,7 +26,8 @@ public class MainManager {
 
     @Getter
     private final ArenaManager arenaManager;
-
+    @Getter
+    private ScoreBoard scoreBoard;
 
     public MainManager(TournamentPlugin plugin) {
         this.arenaManager = new ArenaManager(plugin);
@@ -130,8 +133,8 @@ public class MainManager {
     }
 
     public void startTournament() {
-        for (Player player : Bukkit.getOnlinePlayers())
-        FeatherBoardAPI.showScoreboard(player, "event");
+        scoreBoard = new ScoreBoard(this);
+        scoreBoard.setScoreboardAll();
         tournamentManager.startTournament();
     }
 

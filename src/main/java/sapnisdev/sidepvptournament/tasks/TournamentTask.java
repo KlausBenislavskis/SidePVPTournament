@@ -4,6 +4,7 @@ import lombok.SneakyThrows;
 import org.bukkit.Material;
 import org.bukkit.Statistic;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.plugin.PluginManager;
 import sapnisdev.sidepvptournament.TournamentPlugin;
 import sapnisdev.sidepvptournament.TournamentStage;
 import sapnisdev.sidepvptournament.config.Lang;
@@ -63,7 +64,7 @@ public class TournamentTask extends BukkitRunnable {
 
             final YamlConfiguration config = TournamentPlugin.getInstance().getConfig();
             final Player winner = Bukkit.getPlayer(matchWinners.get(0));
-
+            TournamentPlugin.getMainManager().getScoreBoard().removeScoreboards();
             if (config.getBoolean("configuration.winner-rewards.message-enabled")) {
                 winner.sendMessage(Lang.TOURNAMENT_WINNER_REWARD_MESSAGE.toString());
             }

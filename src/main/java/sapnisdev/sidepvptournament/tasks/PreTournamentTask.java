@@ -38,7 +38,7 @@ public class PreTournamentTask extends BukkitRunnable {
                 Bukkit.broadcastMessage(Lang.TOURNAMENT_POST_START_BROADCAST.toString());
                 TournamentTask task = new TournamentTask(tournament);
                 tournament.setTournamentTask(task);
-
+                TournamentPlugin.getMainManager().getScoreBoard().setScoreboardAll();
                 task.runTaskTimer(TournamentPlugin.getInstance(), 0L, 40L);
             }
             cancel();

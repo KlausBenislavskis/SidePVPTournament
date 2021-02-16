@@ -17,7 +17,6 @@ public class TournamentPlugin extends JavaPlugin {
     @Getter
     private static MainManager mainManager;
 
-
     @Getter
     private ListenerHandler listenerHandler;
 
@@ -57,7 +56,7 @@ public class TournamentPlugin extends JavaPlugin {
     }
 
     private void loadListeners() {
-        listenerHandler = new ListenerHandler(this);
+        listenerHandler = new ListenerHandler(this, mainManager);
     }
 
     private void saveDefault() {
