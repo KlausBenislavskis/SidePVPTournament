@@ -71,7 +71,7 @@ public class TournamentTask extends BukkitRunnable {
             config.getStringList("configuration.winner-rewards.reward-commands")
                     .forEach(s -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), s.replace("{username}", winner.getName())));
             if (config.getBoolean("configuration.winner-rewards.leaderboard-points")) {
-                winner.setStatistic(Statistic.CRAFT_ITEM, Material.HOPPER, winner.getStatistic(Statistic.CRAFT_ITEM, Material.HOPPER) + 1);
+                winner.setStatistic(Statistic.CRAFT_ITEM, Material.HOPPER, winner.getStatistic(Statistic.CRAFT_ITEM, Material.HOPPER) + 5);
             }
             tournament.end();
         }
