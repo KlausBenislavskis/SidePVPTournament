@@ -1,5 +1,6 @@
 package sapnisdev.sidepvptournament.listeners;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Statistic;
 import sapnisdev.sidepvptournament.TournamentPlugin;
@@ -47,9 +48,9 @@ class PlayerDamageListener implements Listener {
                                 }
                                 evt.setCancelled(true);
                                 player.teleport(mainManager.getWorldSpawn());
-                                System.out.println(player.getName());
                                 match.setWinner(player.getName().equalsIgnoreCase(match.getInitiator().getName()) ? match.getOpponent() : match.getInitiator());
-                                player.setStatistic(Statistic.CRAFT_ITEM, Material.HOPPER, player.getStatistic(Statistic.CRAFT_ITEM, Material.HOPPER) + 1);
+                                Player winner = player.getName().equalsIgnoreCase(match.getInitiator().getName()) ? match.getOpponent() : match.getInitiator();
+                                winner.setStatistic(Statistic.CRAFT_ITEM, Material.HOPPER, winner.getStatistic(Statistic.CRAFT_ITEM, Material.HOPPER) + 1);
                                 match.setLoser(player.getName().equalsIgnoreCase(match.getInitiator().getName()) ? match.getInitiator() : match.getOpponent());
                                 mainManager.removeFromTournament(player);
                                 mainManager.addMatchWinner(match.getWinner());

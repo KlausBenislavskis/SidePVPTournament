@@ -21,7 +21,7 @@ public class ScoreBoard {
             } else if (TournamentPlugin.getMainManager().getTournament().getStage().equals(TournamentStage.ACTIVE)) {
                 FeatherBoardAPI.showScoreboard(player, "tournament");
             } else if (TournamentPlugin.getMainManager().getTournament().getStage().equals(TournamentStage.INACTIVE)) {
-                Bukkit.broadcastMessage("Inactive");
+                FeatherBoardAPI.resetDefaultScoreboard(player);
             }
         }
     }
@@ -32,7 +32,7 @@ public class ScoreBoard {
         } else if (TournamentPlugin.getMainManager().getTournament().getStage().equals(TournamentStage.ACTIVE)) {
             FeatherBoardAPI.showScoreboard(player, "tournament");
         } else if (TournamentPlugin.getMainManager().getTournament().getStage().equals(TournamentStage.INACTIVE)) {
-            Bukkit.broadcastMessage("Inactive");
+            FeatherBoardAPI.resetDefaultScoreboard(player);
         }
     }
 

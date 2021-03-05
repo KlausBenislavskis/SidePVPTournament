@@ -3,11 +3,15 @@ package sapnisdev.sidepvptournament.PlaceHolders;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 import sapnisdev.sidepvptournament.TournamentPlugin;
 import sapnisdev.sidepvptournament.objects.Match;
 import sapnisdev.sidepvptournament.objects.Tournament;
 
 import java.text.DecimalFormat;
+import java.time.Duration;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 import static org.bukkit.Statistic.*;
 
@@ -40,7 +44,7 @@ public class Expansions extends PlaceholderExpansion {
     }
 
     @Override
-    public String onRequest(OfflinePlayer player, String identifier) {
+    public String onPlaceholderRequest(Player player, String identifier) {
 
         if (identifier.equals("players_joined")) {
 
@@ -100,7 +104,8 @@ public class Expansions extends PlaceholderExpansion {
         }
         if (identifier.equals("till_start")) {
             if (TournamentPlugin.getMainManager().isTournamentRunning()) {
-                return TournamentPlugin.getMainManager().getTournament().getPreTournamentTask().getCountdown();
+                String formatted = LocalTime.MIDNIGHT.plus(Duration.ofSeconds(Long.parseLong(TournamentPlugin.getMainManager().getTournament().getPreTournamentTask().getCountdown()))).format(DateTimeFormatter.ofPattern("mm:ss"));
+                return formatted;
             }
             return "Inactive";
 
