@@ -17,7 +17,6 @@ configuration:
    prefix: "&4Tournament &8//&a "
    prefix-enabled: true
    tournament-start-delay: 60
-   match-duration: 180
    minimum-players-to-start: 2
    maximum-players-allowed: 8
    force-player-clear-inventory: true
@@ -37,7 +36,7 @@ configuration:
    winner-rewards:
       message-enabled: true
       leaderboard-points: true
-      reward-commands:
+      reward-command:
    when-fighting:
       ensure-max-health: true
       ensure-max-hunger: true
@@ -45,51 +44,6 @@ configuration:
       ensure-min-exhaustion: true
       ensure-survival-gamemode: true
       prevent-drop-items: true
-
-      effects:
-         SPEED: 2
-         INCREASE_DAMAGE: 1
-      armor:
-         0:
-            material: DIAMOND_HELMET
-            enchantments:
-               PROTECTION_ENVIRONMENTAL: 2
-         1:
-            material: DIAMOND_CHESTPLATE
-            enchantments:
-               PROTECTION_ENVIRONMENTAL: 2
-         2:
-            material: DIAMOND_LEGGINGS
-            enchantments:
-               PROTECTION_ENVIRONMENTAL: 2
-         3:
-            material: DIAMOND_BOOTS
-            enchantments:
-               PROTECTION_ENVIRONMENTAL: 2
-      inventory:
-         0:
-            material: DIAMOND_SWORD
-            material-id: 0
-            amount: 1
-            enchantments:
-               DAMAGE_ALL: 2
-            slot-numbers:
-            - 0
-         1:
-            material: POTION
-            material-id: 16421
-            amount: 1
-            enchantments: {}
-            slot-numbers:
-            - 1
-            - 2
-            - 3
-            - 4
-            - 5
-            - 6
-            - 7
-            - 8
-
    cmd-whitelist:
    - /tournament
    - /st
@@ -106,7 +60,7 @@ configuration:
 
 messages:
     no-permission: "&cYou do not have permission to execute this command."
-    improper-usage: "&cImproper usage. Proper usage for this command: /tournament join | forcestart | leave | start | end | setspawn <arena> <1|2> | setspawn <-spectator|-world>."
+    improper-usage: "&cImproper usage. Proper usage for this command: /t join | vote | setkit | forcestart | leave | start | end | setspawn <arena> <1|2> | setspawn <-spectator|-world>."
     invalid-sender: "&cInvalid sender. You must be a player to perform this command."
     invalid-number: "&cInvalid number. You must enter a positive integer."
     plugin-disabled-in-world: "&cThis plugin is disabled in the world you are currently in."
@@ -144,8 +98,38 @@ messages:
     tournament-end-success: "&aYou have successfully ended the tournament."
     tournament-end-broadcast: "&eThe tournament has forcibly been ended."
     tournament-no-winner-broadcast: "&eUnfortunately, no one has won this tournament."
-    tournament-winner-broadcast: "&e{winner} &7has won the tournament!"
+    tournament-winner-broadcast:
+      - '&r'
+      - '&r'
+      - '&c{winner} &7has won the tournament!'
+      - '&r'
+      - '&r'
     tournament-winner-reward-message: "&dYou have received $10000 for winning this tournament!"
+    you-voted: "&7Successfully voted."
+    must-be-in: "&cYou need to be in Tournament to vote."
+    already-voted: "&cYou have already voted."
+    cant-vote: "&cYou cannot vote when game is not started."
+
+kits:
+  ARCHER:
+    armor: [ ]
+    inventory: [ ]
+    effects:
+      SPEED: 3
+    fight-duration: 180
+  POTION:
+    armor: [ ]
+    inventory: [ ]
+    effects:
+      SPEED: 2
+    fight-duration: 180
+  GAPPLE:
+    armor: [ ]
+    inventory: [ ]
+    effects:
+      SPEED: 2
+      INCREASE_DAMAGE: 1
+    fight-duration: 180
 
 world-spawn:
 

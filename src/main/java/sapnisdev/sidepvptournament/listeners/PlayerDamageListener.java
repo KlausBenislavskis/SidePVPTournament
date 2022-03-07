@@ -1,20 +1,26 @@
 package sapnisdev.sidepvptournament.listeners;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Statistic;
-import sapnisdev.sidepvptournament.TournamentPlugin;
-import sapnisdev.sidepvptournament.managers.MainManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import sapnisdev.sidepvptournament.TournamentPlugin;
+import sapnisdev.sidepvptournament.managers.MainManager;
+import sapnisdev.sidepvptournament.objects.player.SavedPlayerState;
+
+import java.util.HashMap;
+
+import static sapnisdev.sidepvptournament.CommandTournament.playerLocations;
 
 class PlayerDamageListener implements Listener {
     private final MainManager mainManager;
+    private final HashMap<Player, SavedPlayerState> playerStates;
 
     PlayerDamageListener(TournamentPlugin plugin) {
         this.mainManager = TournamentPlugin.getMainManager();
+        this.playerStates = new HashMap<>();
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
@@ -47,7 +53,12 @@ class PlayerDamageListener implements Listener {
                                     return;
                                 }
                                 evt.setCancelled(true);
-                                player.teleport(mainManager.getWorldSpawn());
+                                if(playerLocations.containsKey(player)){
+                                    player.teleport(playerLocations.get(player));
+                                } else {
+                                    player.teleport(mainManager.getWorldSpawn());
+                                }
+                                playerLocations.remove(player);
                                 match.setWinner(player.getName().equalsIgnoreCase(match.getInitiator().getName()) ? match.getOpponent() : match.getInitiator());
                                 Player winner = player.getName().equalsIgnoreCase(match.getInitiator().getName()) ? match.getOpponent() : match.getInitiator();
                                 winner.setStatistic(Statistic.CRAFT_ITEM, Material.HOPPER, winner.getStatistic(Statistic.CRAFT_ITEM, Material.HOPPER) + 1);

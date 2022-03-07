@@ -2,9 +2,10 @@ package sapnisdev.sidepvptournament;
 
 import lombok.Getter;
 import org.bukkit.Bukkit;
-import sapnisdev.sidepvptournament.PlaceHolders.Expansions;
+import sapnisdev.sidepvptournament.Utils.Expansions;
 import sapnisdev.sidepvptournament.api.TournamentAPI;
 import sapnisdev.sidepvptournament.config.PluginConfig;
+import sapnisdev.sidepvptournament.kits.VoteGUI;
 import sapnisdev.sidepvptournament.listeners.ListenerHandler;
 import sapnisdev.sidepvptournament.managers.MainManager;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -20,8 +21,10 @@ public class TournamentPlugin extends JavaPlugin {
     @Getter
     private ListenerHandler listenerHandler;
 
+    private static TournamentPlugin plugin;
     @Getter
     private final PluginConfig rawConfig;
+    private static VoteGUI voteGUI;
 
     public TournamentPlugin() {
         this.rawConfig = new PluginConfig(this, "settings.yml");
@@ -29,10 +32,11 @@ public class TournamentPlugin extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        plugin = this;
         saveDefault();
-
         mainManager = new MainManager(this);
         tournamentAPI = new TournamentAPI();
+        voteGUI = new VoteGUI();
 
         loadCommands();
         loadListeners();
@@ -62,10 +66,15 @@ public class TournamentPlugin extends JavaPlugin {
     private void saveDefault() {
         rawConfig.saveDefaultConfig();
     }
-
+    public static TournamentPlugin getPlugin() {
+        return plugin;
+    }
     @Override
     public YamlConfiguration getConfig() {
         return getRawConfig().getConfig();
+    }
+    public static VoteGUI getVoteGUI() {
+        return voteGUI;
     }
 
     public static TournamentPlugin getInstance() {

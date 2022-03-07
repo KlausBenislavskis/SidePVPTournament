@@ -1,17 +1,15 @@
 package sapnisdev.sidepvptournament.managers;
 
 import lombok.Getter;
-import org.bukkit.Bukkit;
-import org.bukkit.util.io.BukkitObjectInputStream;
-import sapnisdev.sidepvptournament.FeatherBoard.ScoreBoard;
+import sapnisdev.sidepvptournament.Utils.ScoreBoard;
 import sapnisdev.sidepvptournament.TournamentPlugin;
+import sapnisdev.sidepvptournament.kits.KitType;
 import sapnisdev.sidepvptournament.objects.Arena;
 import sapnisdev.sidepvptournament.objects.Match;
 import sapnisdev.sidepvptournament.objects.Tournament;
 import sapnisdev.sidepvptournament.objects.player.SavedPlayerState;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import be.maximvdw.featherboard.api.FeatherBoardAPI;
 
 import java.util.HashMap;
 import java.util.List;
@@ -28,6 +26,7 @@ public class MainManager {
     private final ArenaManager arenaManager;
     @Getter
     private ScoreBoard scoreBoard;
+    private KitType kitType;
 
     public MainManager(TournamentPlugin plugin) {
         this.arenaManager = new ArenaManager(plugin);
@@ -131,7 +130,12 @@ public class MainManager {
     public void removeFromTournament(Player... participants) {
         tournamentManager.removeFromTournament(participants);
     }
-
+    public void setKitType(KitType kitType) {
+        this.kitType = kitType;
+    }
+    public KitType getKitType() {
+        return kitType;
+    }
     public void startTournament() {
         scoreBoard = new ScoreBoard(this);
         tournamentManager.startTournament();

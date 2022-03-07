@@ -15,6 +15,8 @@ import org.bukkit.entity.Player;
 import java.util.Collection;
 import java.util.HashMap;
 
+import static sapnisdev.sidepvptournament.CommandTournament.playerLocations;
+
 
 public class Tournament {
     private final MainManager mainManager;
@@ -36,7 +38,8 @@ public class Tournament {
     public void start(boolean forced) {
         reset(false);
         mainManager.loadArenas();
-
+        TournamentPlugin.getVoteGUI().reset();
+        TournamentPlugin.getVoteGUI().setVoting(true);
         if(forced) {
             Bukkit.broadcastMessage(Lang.TOURNAMENT_POST_START_BROADCAST.toString());
             tournamentTask = new TournamentTask(this);
@@ -75,15 +78,24 @@ public class Tournament {
                     playerStates.get(player.getName()).revert();
                     playerStates.remove(player.getName());
                 }
-
-                player.teleport(mainManager.getWorldSpawn());
+                if(playerLocations.containsKey(player)){
+                    player.teleport(playerLocations.get(player));
+                } else {
+                    player.teleport(mainManager.getWorldSpawn());
+                }
+                playerLocations.remove(player);
             });
             mainManager.clearParticipants();
             mainManager.getMatches().forEach(match -> match.getMatchTask().cancel());
+            TournamentPlugin.getVoteGUI().reset();
+            playerLocations.clear();
         }
+
 
         mainManager.clearMatchWinners();
         mainManager.clearMatches();
         mainManager.clearArenas();
+        playerLocations.clear();
+        TournamentPlugin.getVoteGUI().reset();
     }
 }

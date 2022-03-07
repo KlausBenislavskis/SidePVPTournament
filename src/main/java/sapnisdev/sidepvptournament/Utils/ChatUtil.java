@@ -1,4 +1,4 @@
-package sapnisdev.sidepvptournament;
+package sapnisdev.sidepvptournament.Utils;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

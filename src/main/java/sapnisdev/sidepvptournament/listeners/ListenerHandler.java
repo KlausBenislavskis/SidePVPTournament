@@ -25,6 +25,8 @@ public class ListenerHandler {
     private PlayerJoinListener playerJoinListener;
     @Getter
     private playerTeleportEvent playerTeleportEvent;
+    @Getter
+    private InventoryClick InventoryClick;
 
     public ListenerHandler(TournamentPlugin plugin, MainManager mainManager) {
         this.commandListener = new CommandListener(plugin);
@@ -34,5 +36,6 @@ public class ListenerHandler {
         this.blockBreakListener = new BlockBreakListener(plugin);
         this.playerTeleportEvent = new playerTeleportEvent(plugin);
         this.playerJoinListener = new PlayerJoinListener(plugin,mainManager);
+        this.InventoryClick = new InventoryClick(plugin);
     }
 }

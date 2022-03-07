@@ -1,7 +1,12 @@
 package sapnisdev.sidepvptournament;
 
-import me.clip.placeholderapi.PlaceholderAPI;
+import org.bukkit.Location;
+import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.scheduler.BukkitScheduler;
+import sapnisdev.sidepvptournament.Utils.SerializationUtil;
 import sapnisdev.sidepvptournament.config.Lang;
+import sapnisdev.sidepvptournament.kits.KitType;
 import sapnisdev.sidepvptournament.managers.MainManager;
 import sapnisdev.sidepvptournament.objects.Match;
 import org.bukkit.Bukkit;
@@ -11,21 +16,28 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import sapnisdev.sidepvptournament.objects.player.SavedPlayerState;
 
+import java.io.File;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-class CommandTournament implements CommandExecutor {
+import static org.bukkit.Bukkit.getServer;
+import static sapnisdev.sidepvptournament.Utils.ChatUtil.color;
+
+public class CommandTournament implements CommandExecutor {
     private TournamentPlugin plugin;
     private MainManager mainManager;
-
-    private List<UUID> partCopy;
+    public final HashMap<Player, SavedPlayerState> playerStates;
+    public static final HashMap<Player, Location> playerLocations = new HashMap<>();
 
     CommandTournament(TournamentPlugin instance) {
         this.plugin = instance;
+        this.playerStates = new HashMap<>();
         this.mainManager = TournamentPlugin.getMainManager();
     }
 
@@ -37,7 +49,7 @@ class CommandTournament implements CommandExecutor {
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         try {
-            checkPerm(sender, "smarttournament.default");
+            checkPerm(sender, "sidetournament.default");
             checkArgs(args, 1);
         } catch (CommandException e) {
             sender.sendMessage(e.getMessage());
@@ -57,6 +69,67 @@ class CommandTournament implements CommandExecutor {
     }
 
     private boolean run(CommandSender sender, Command cmd, String label, String subCommand, String[] args) {
+
+        if (sender instanceof ConsoleCommandSender) {
+            switch (args[0].toLowerCase()) {
+                case "start":
+                    if (mainManager.isTournamentRunning()) {
+                        sender.sendMessage(Lang.TOURNAMENT_ALREADY_STARTED.toString());
+                        return true;
+                    }
+
+                    if (plugin.getConfig().get("arenas") == null ||
+                            plugin.getConfig().get("spectator") == null ||
+                            plugin.getConfig().get("world-spawn") == null) {
+                        sender.sendMessage(Lang.TOURNAMENT_AREAS_NOT_SET.toString());
+                        return true;
+                    }
+
+                    final YamlConfiguration config = TournamentPlugin.getInstance().getConfig();
+                    List<?> mesage = config.getList("messages.tournament-pre-start-broadcast");
+                    for (int i = 0; i < mesage.size(); i++) {
+                        Bukkit.broadcastMessage(color((String) mesage.get(i)));
+                    }
+                    sender.sendMessage(Lang.TOURNAMENT_START_SUCCESS.toString());
+
+                    if (args.length > 1) {
+                        StringBuilder sb = new StringBuilder();
+                        for (int i = 0; i < args.length; i++) {
+                            if (i > 0) sb.append(" ");
+                            sb.append(args[i]);
+                        }
+                        TournamentPlugin.getPlugin().getRawConfig().getConfig().set("configuration.winner-rewards.reward-command", sb.toString().replace("start ", ""));
+                        TournamentPlugin.getPlugin().getRawConfig().saveConfig();
+                    }
+                    TournamentPlugin.getVoteGUI().reset();
+                    TournamentPlugin.getVoteGUI().setVoting(true);
+                    mainManager.startTournament();
+                    break;
+                case "forcestart":
+                    if (mainManager.isTournamentRunning()) {
+                        mainManager.getTournament().getPreTournamentTask().setCountdown();
+                        return true;
+                    }
+                    else {
+                        sender.sendMessage(Lang.NO_TOURNAMENTS_RUNNING.toString());
+                    }
+                    TournamentPlugin.getVoteGUI().reset();
+                    break;
+                case "end":
+                    if (!mainManager.isTournamentRunning()) {
+                        sender.sendMessage(Lang.NO_TOURNAMENTS_RUNNING.toString());
+                        return true;
+                    }
+
+                    Bukkit.broadcastMessage(Lang.TOURNAMENT_END_BROADCAST.toString());
+                    sender.sendMessage(Lang.TOURNAMENT_END_SUCCESS.toString());
+                    TournamentPlugin.getMainManager().getScoreBoard().removeScoreboards();
+                    TournamentPlugin.getVoteGUI().reset();
+                    mainManager.endTournament();
+                    break;
+            }
+        }
+
         if (sender instanceof Player) {
             Player player = (Player) sender;
 
@@ -71,6 +144,41 @@ class CommandTournament implements CommandExecutor {
         Player player;
 
         switch (subCommand) {
+            case "start":
+                checkPerm(sender, "sidetournament.start");
+
+                if (mainManager.isTournamentRunning()) {
+                    sender.sendMessage(Lang.TOURNAMENT_ALREADY_STARTED.toString());
+                    return true;
+                }
+
+                if (plugin.getConfig().get("arenas") == null ||
+                        plugin.getConfig().get("spectator") == null ||
+                        plugin.getConfig().get("world-spawn") == null) {
+                    sender.sendMessage(Lang.TOURNAMENT_AREAS_NOT_SET.toString());
+                    return true;
+                }
+
+                final YamlConfiguration config = TournamentPlugin.getInstance().getConfig();
+                List<?> mesage = config.getList("messages.tournament-pre-start-broadcast");
+                for (int i = 0; i < mesage.size(); i++) {
+                    Bukkit.broadcastMessage(color((String) mesage.get(i)));
+                }
+                sender.sendMessage(Lang.TOURNAMENT_START_SUCCESS.toString());
+
+                if (args.length > 1) {
+                    StringBuilder sb = new StringBuilder();
+                    for (int i = 0; i < args.length; i++) {
+                        if (i > 0) sb.append(" ");
+                        sb.append(args[i]);
+                    }
+                    TournamentPlugin.getPlugin().getRawConfig().getConfig().set("configuration.winner-rewards.reward-command", sb.toString().replace("start ", ""));
+                    TournamentPlugin.getPlugin().getRawConfig().saveConfig();
+                }
+                TournamentPlugin.getVoteGUI().reset();
+                TournamentPlugin.getVoteGUI().setVoting(true);
+                mainManager.startTournament();
+                break;
             case "join":
                 checkPlayer(sender);
                 player = (Player) sender;
@@ -104,14 +212,31 @@ class CommandTournament implements CommandExecutor {
                     }
                 }
 
+                playerLocations.put(player, player.getLocation());
 
                 mainManager.addParticipant(player);
+
 
                 if (!plugin.getConfig().getBoolean("configuration.disable-join/leave-tournament-message")) {
                     Bukkit.broadcastMessage(Lang.TOURNAMENT_JOINED_BROADCAST.toString().replace("{username}", player.getName()));
                 }
                 player.sendMessage(Lang.TOURNAMENT_JOINED_SUCCESS.toString());
                 player.teleport(mainManager.getSpectatorArea());
+
+                BukkitScheduler scheduler = getServer().getScheduler();
+                scheduler.scheduleSyncDelayedTask(TournamentPlugin.getPlugin(), new Runnable() {
+                    @Override
+                    public void run() {
+                        if (!TournamentPlugin.getVoteGUI().hasVoted(player)) {
+                            if (TournamentPlugin.getVoteGUI().isVoting()) {
+                                player.openInventory(TournamentPlugin.getVoteGUI().getInventory());
+                            } else {
+                                player.sendMessage(color(Lang.CANT_VOTE.toString()));
+                            }
+                        }
+                    }
+                },5L);
+
 
                 break;
 
@@ -144,30 +269,58 @@ class CommandTournament implements CommandExecutor {
 
 
                 mainManager.removeFromTournament(player);
-                player.teleport(mainManager.getWorldSpawn());
+                if(playerLocations.containsKey(player)){
+                    player.teleport(playerLocations.get(player));
+                } else {
+                    player.teleport(mainManager.getWorldSpawn());
+                }
+                playerLocations.remove(player);
+                player.closeInventory();
                 break;
+            case "setkit": {
+                checkPerm(sender, "side.admin");
 
-            case "start":
-                checkPerm(sender, "smarttournament.start");
-
-                if (mainManager.isTournamentRunning()) {
-                    sender.sendMessage(Lang.TOURNAMENT_ALREADY_STARTED.toString());
+                if (args.length < 2) {
+                    sender.sendMessage(color("&4[!] &cUsage: /t setkit <kit_name>"));
+                    sender.sendMessage(color("&7&oCurrent Kit Types: ARCHER, POTION, GAPPLE"));
                     return true;
                 }
 
-                if (plugin.getConfig().get("arenas") == null ||
-                        plugin.getConfig().get("spectator") == null ||
-                        plugin.getConfig().get("world-spawn") == null) {
-                    sender.sendMessage(Lang.TOURNAMENT_AREAS_NOT_SET.toString());
+                String kitType = args[1].toUpperCase();
+                KitType type = KitType.valueOf(kitType);
+
+
+                if (type == null) {
+                    sender.sendMessage(color("&4[!] &cInvalid kit."));
+                    return true;
+                }
+                player = (Player) sender;
+
+                TournamentPlugin.getPlugin().getRawConfig().getConfig().set("kits." + type.toString().toUpperCase() + ".armor", SerializationUtil.itemStackArrayToString(player.getInventory().getArmorContents()));
+                TournamentPlugin.getPlugin().getRawConfig().getConfig().set("kits." + type.toString().toUpperCase() + ".inventory", SerializationUtil.itemStackArrayToString(player.getInventory().getContents()));
+                TournamentPlugin.getPlugin().getRawConfig().saveConfig();
+
+                sender.sendMessage(color("&4[!] &c" + type.toString().toUpperCase() + " &7Kit successfully set."));
+
+                break;
+            }
+            case "vote": {
+                player = (Player) sender;
+                if (!TournamentPlugin.getMainManager().getParticipants().contains(player.getUniqueId())) {
+                    player.sendMessage(color(Lang.NEED_TO_BE_IN_TOURNAMENT.toString()));
                     return true;
                 }
 
-                Bukkit.broadcastMessage(Lang.TOURNAMENT_PRE_START_BROADCAST.toString());
-                sender.sendMessage(Lang.TOURNAMENT_START_SUCCESS.toString());
+                if (TournamentPlugin.getVoteGUI().isVoting()) {
+                    player.openInventory(TournamentPlugin.getVoteGUI().getInventory());
+                } else {
+                    player.sendMessage(color(Lang.CANT_VOTE.toString()));
+                }
 
-                mainManager.startTournament();
                 break;
+            }
             case "forcestart":
+                checkPerm(sender, "sidetournament.start");
                 if (mainManager.isTournamentRunning()) {
                     mainManager.getTournament().getPreTournamentTask().setCountdown();
                     return true;
@@ -177,7 +330,7 @@ class CommandTournament implements CommandExecutor {
                 }
                 break;
             case "end":
-                checkPerm(sender, "smarttournament.end");
+                checkPerm(sender, "sidetournament.end");
 
                 if (!mainManager.isTournamentRunning()) {
                     sender.sendMessage(Lang.NO_TOURNAMENTS_RUNNING.toString());
@@ -187,6 +340,7 @@ class CommandTournament implements CommandExecutor {
                 Bukkit.broadcastMessage(Lang.TOURNAMENT_END_BROADCAST.toString());
                 sender.sendMessage(Lang.TOURNAMENT_END_SUCCESS.toString());
                 TournamentPlugin.getMainManager().getScoreBoard().removeScoreboards();
+                TournamentPlugin.getVoteGUI().reset();
                 mainManager.endTournament();
                 break;
 
@@ -194,7 +348,7 @@ class CommandTournament implements CommandExecutor {
                 checkPlayer(sender);
                 player = (Player) sender;
 
-                checkPerm(sender, "smarttournament.setspawn");
+                checkPerm(sender, "sidetournament.setspawn");
                 if (args.length == 2) {
                     if (args[1].equalsIgnoreCase("-spectator")) {
                         sender.sendMessage(Lang.SPECTATOR_AREA_SET.toString());
@@ -225,7 +379,7 @@ class CommandTournament implements CommandExecutor {
                 }
                 break;
             case "end-match":
-                checkPerm(sender, "smarttournament.endmatch");
+                checkPerm(sender, "sidetournament.endmatch");
                 if (args.length == 1) {
                     if (mainManager.getMatches().size() == 1) {
                         sender.sendMessage(Lang.MATCH_CURRENT_FORCE_END_SUCCESS.toString());
@@ -238,7 +392,7 @@ class CommandTournament implements CommandExecutor {
                                         .replace("{initiator}", match.getInitiator().getName())
                                         .replace("{opponent}", match.getOpponent().getName()))
                                 .collect(Collectors.joining(plugin.getConfig().getString("messages.match-force-end-select-separator")));
-                        sender.sendMessage(Lang.MATCH_FORCE_END_SELECT.toString().replace("{matches}", ChatUtil.color(matches)));
+                        sender.sendMessage(Lang.MATCH_FORCE_END_SELECT.toString().replace("{matches}", color(matches)));
                     }
                     return true;
                 }
@@ -252,24 +406,6 @@ class CommandTournament implements CommandExecutor {
                         .replace("{initiator}", match.getInitiator().getName())
                         .replace("{opponent}", match.getOpponent().getName()));
                 break;
-           /*case "list":
-                checkPerm(sender, "smarttournament.list");
-
-                if(!mainManager.isTournamentRunning()) {
-                    sender.sendMessage(Lang.NO_TOURNAMENTS_RUNNING.toString());
-                    return true;
-                }
-
-                partCopy = new ArrayList<>(mainManager.getParticipants());
-                mainManager.getParticipants().
-            case "forcestart":
-                checkPerm(sender, "smarttournament.forcestart");
-
-                if(!mainManager.isTournamentRunning()) {
-                    sender.sendMessage(Lang.REQUIRE_START_BEFORE_FORCESTART.toString());
-                    return true;
-                }*/
-
             default:
                 throw new CommandException(Lang.IMPROPER_USAGE.toString());
         }

@@ -17,7 +17,7 @@ class BlockBreakListener implements Listener {
     @EventHandler
     public void onBlockBreak(BlockBreakEvent evt) {
         if(mainManager.isTournamentRunning()) {
-            if(mainManager.isInTournament(evt.getPlayer()) && !evt.getPlayer().hasPermission("smarttournament.blockbreak.bypass")) {
+            if(mainManager.isInTournament(evt.getPlayer()) && !evt.getPlayer().hasPermission("sidetournament.blockbreak.bypass")) {
                 evt.setCancelled(true);
             }
         }

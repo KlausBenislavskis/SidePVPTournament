@@ -63,7 +63,6 @@ public class MatchManager {
     }
 
     public void teleportPlayers(Match match) {
-//Pameginat settot location nevsis tp
         match.getInitiator().teleport(match.getArena().getFirstLocation());
         match.getOpponent().teleport(match.getArena().getSecondLocation());
     }
@@ -72,7 +71,8 @@ public class MatchManager {
         plugin.getServer().getPluginManager().callEvent(new MatchStartEvent(match));
         Bukkit.broadcastMessage(Lang.MATCH_START_BROADCAST.toString().replace("{initiator}", match.getInitiator().getName()).replace("{opponent}", match.getOpponent().getName()));
 
-
+        TournamentPlugin.getMainManager().setKitType(TournamentPlugin.getVoteGUI().getMostVotedKit());
+        TournamentPlugin.getVoteGUI().setVoting(false);
         teleportPlayers(match);
         matches.add(match);
 
@@ -99,7 +99,6 @@ public class MatchManager {
 
         matches.remove(match);
         unmapStates(playerStates, match);
-
         match.reset();
     }
 
@@ -139,6 +138,7 @@ public class MatchManager {
         if (mainManager.getMatchWinners().size() == 0 && mainManager.getParticipants().size() < 1 && mainManager.getMatches().size() < 1) {
             Bukkit.broadcastMessage(Lang.TOURNAMENT_NO_WINNER_BROADCAST.toString());
             mainManager.getTournament().end();
+            TournamentPlugin.getVoteGUI().reset();
         }
     }
 

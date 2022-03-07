@@ -29,12 +29,12 @@ class CommandListener implements Listener {
                 return;
             }
 
-            if(evt.getPlayer().hasPermission("smarttournament.chatbypass")) {
+            if(evt.getPlayer().hasPermission("sidetournament.chatbypass")) {
                 return;
             }
 
             if (evt.getMessage().charAt(0) == '/') {
-                if (!config.getStringList("configuration.cmd-whitelist").stream().anyMatch(s -> s.trim().equalsIgnoreCase(evt.getMessage().trim().split(" ")[0]))) {
+                if (config.getStringList("configuration.cmd-whitelist").stream().noneMatch(s -> s.trim().equalsIgnoreCase(evt.getMessage().trim().split(" ")[0]))) {
                     evt.getPlayer().sendMessage(Lang.COMMAND_USE_DENIED.toString());
                     evt.setCancelled(true);
                 }

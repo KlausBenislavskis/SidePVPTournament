@@ -1,4 +1,4 @@
-package sapnisdev.sidepvptournament.FeatherBoard;
+package sapnisdev.sidepvptournament.Utils;
 
 import be.maximvdw.featherboard.api.FeatherBoardAPI;
 import org.bukkit.Bukkit;

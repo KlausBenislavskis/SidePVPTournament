@@ -34,7 +34,7 @@ public class Match {
     public Match(Player initiator, Player opponent) {
         this.initiator = initiator;
         this.opponent = opponent;
-        this.duration = 20L /*ticks*/ * TournamentPlugin.getInstance().getConfig().getInt("configuration.match-duration") /*seconds*/;
+        this.duration = 20L /*ticks*/ * TournamentPlugin.getPlugin().getRawConfig().getConfig().getInt("kits." + TournamentPlugin.getVoteGUI().getMostVotedKit().toString().toUpperCase() + ".fight-duration") /*seconds*/;
         this.isRunning = true;
     }
 

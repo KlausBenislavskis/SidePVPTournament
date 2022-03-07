@@ -46,13 +46,9 @@ public class TournamentManager {
 
     public void removeFromTournament(Player... participants) {
         for(Player player: participants) {
-            if (mainManager.getMatchWinners().contains(player.getUniqueId())) {
-                mainManager.getMatchWinners().remove(player.getUniqueId());
-            }
+            mainManager.getMatchWinners().remove(player.getUniqueId());
 
-            if (mainManager.getParticipants().contains(player.getUniqueId())) {
-                mainManager.getParticipants().remove(player.getUniqueId());
-            }
+            mainManager.getParticipants().remove(player.getUniqueId());
         }
     }
 

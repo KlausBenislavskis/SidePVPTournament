@@ -3,8 +3,6 @@ package sapnisdev.sidepvptournament.tasks;
 import lombok.SneakyThrows;
 import org.bukkit.Material;
 import org.bukkit.Statistic;
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.plugin.PluginManager;
 import sapnisdev.sidepvptournament.TournamentPlugin;
 import sapnisdev.sidepvptournament.TournamentStage;
 import sapnisdev.sidepvptournament.config.Lang;
@@ -17,11 +15,9 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.ObjectOutputStream;
 import java.util.*;
-import java.util.zip.GZIPOutputStream;
+
+import static sapnisdev.sidepvptournament.Utils.ChatUtil.color;
 
 public class TournamentTask extends BukkitRunnable {
     private final MainManager mainManager;
@@ -60,17 +56,22 @@ public class TournamentTask extends BukkitRunnable {
             participants.addAll(matchWinners);
             matchWinners.clear();
         } else if (matchWinners.size() == 1 && participants.size() < 1 && mainManager.getMatches().size() == 0) {
-            Bukkit.broadcastMessage(Lang.TOURNAMENT_WINNER_BROADCAST.toString().replace("{winner}", Bukkit.getPlayer(matchWinners.get(0)).getName()));
-
             final YamlConfiguration config = TournamentPlugin.getInstance().getConfig();
+            List<?> mesage = config.getList("messages.tournament-winner-broadcast");
+            for (Object o : mesage) {
+                Bukkit.broadcastMessage(color((String) o).replace("{winner}", Bukkit.getPlayer(matchWinners.get(0)).getName()));
+            }
+
+
             final Player winner = Bukkit.getPlayer(matchWinners.get(0));
             TournamentPlugin.getMainManager().getScoreBoard().removeScoreboards();
             if (config.getBoolean("configuration.winner-rewards.message-enabled")) {
+
                 winner.sendMessage(Lang.TOURNAMENT_WINNER_REWARD_MESSAGE.toString());
             }
 
-            config.getStringList("configuration.winner-rewards.reward-commands")
-                    .forEach(s -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), s.replace("{username}", winner.getName())));
+            String s = String.valueOf(config.get("configuration.winner-rewards.reward-command"));
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), s.replace("{username}", winner.getName()));
             if (config.getBoolean("configuration.winner-rewards.leaderboard-points")) {
                 winner.setStatistic(Statistic.CRAFT_ITEM, Material.HOPPER, winner.getStatistic(Statistic.CRAFT_ITEM, Material.HOPPER) + 5);
             }

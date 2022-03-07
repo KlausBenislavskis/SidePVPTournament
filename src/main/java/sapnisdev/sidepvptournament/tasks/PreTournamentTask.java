@@ -1,11 +1,17 @@
 package sapnisdev.sidepvptournament.tasks;
 
+import org.bukkit.configuration.file.YamlConfiguration;
 import sapnisdev.sidepvptournament.TournamentPlugin;
 import sapnisdev.sidepvptournament.TournamentStage;
 import sapnisdev.sidepvptournament.config.Lang;
 import sapnisdev.sidepvptournament.objects.Tournament;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.List;
+import java.util.UUID;
+
+import static sapnisdev.sidepvptournament.Utils.ChatUtil.color;
 
 public class PreTournamentTask extends BukkitRunnable {
     private final TournamentPlugin plugin;
@@ -25,7 +31,6 @@ public class PreTournamentTask extends BukkitRunnable {
                 Bukkit.broadcastMessage(Lang.TOURNAMENT_POST_START_BROADCAST.toString());
                 TournamentTask task = new TournamentTask(tournament);
                 tournament.setTournamentTask(task);
-
                 task.runTaskTimer(TournamentPlugin.getInstance(), 0L, 40L);
                 cancel();
             }
@@ -38,18 +43,29 @@ public class PreTournamentTask extends BukkitRunnable {
                 Bukkit.broadcastMessage(Lang.TOURNAMENT_POST_START_BROADCAST.toString());
                 TournamentTask task = new TournamentTask(tournament);
                 tournament.setTournamentTask(task);
-                TournamentPlugin.getMainManager().getScoreBoard().setScoreboardAll();
+                for (UUID uuid : TournamentPlugin.getMainManager().getParticipants()){
+                    TournamentPlugin.getMainManager().getScoreBoard().setScoreBoard(Bukkit.getPlayer(uuid));
+                }
                 task.runTaskTimer(TournamentPlugin.getInstance(), 0L, 40L);
             }
             cancel();
         }
 
         else if(plugin.getConfig().getIntegerList("configuration.countdown-values").contains(countdown)) {
-            Bukkit.broadcastMessage(Lang.TOURNAMENT_COUNTDOWN_BROADCAST.toString().replace("{countdown}", String.valueOf(countdown)));
+            int min = countdown / 60;
+            int sec = countdown % 60;
+            String str = (min > 0 ? min + " minutes" : "") + (sec > 0 ? sec + " seconds" : "");
+            final YamlConfiguration config = TournamentPlugin.getInstance().getConfig();
+            List<?> mesage = config.getList("messages.tournament-countdown-broadcast");
+            for (int i = 0; i < mesage.size(); i++) {
+                Bukkit.broadcastMessage(color((String) mesage.get(i)).replace("{countdown}", str));
+            }
         }
 
         countdown--;
     }
+
+
     public  void setCountdown(){
         countdown = 10;
     }

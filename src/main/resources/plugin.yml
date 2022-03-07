@@ -1,8 +1,9 @@
 name: SidePVPTournament
 main: sapnisdev.sidepvptournament.TournamentPlugin
-authors: [ Sapnis ]
+authors: [ Latvish, Zurius ]
 description: 1vs1 pvp Tournament
-version: 0.2
+version: 1.4
+api-version: 1.16
 commands:
   t:
     aliases: [tournament]

@@ -3,6 +3,7 @@ package sapnisdev.sidepvptournament.config;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.io.BukkitObjectOutputStream;
+import sapnisdev.sidepvptournament.TournamentPlugin;
 
 import java.io.*;
 import java.util.zip.GZIPOutputStream;
@@ -14,6 +15,7 @@ public class PluginConfig {
 
     private File file;
     private YamlConfiguration config;
+
 
     public PluginConfig(JavaPlugin plugin, String fileName) {
         if (plugin == null) {
